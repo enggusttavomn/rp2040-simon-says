@@ -1,0 +1,18 @@
+name: MicroPython checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Python source
+        run: python -m compileall -q main.py lib tests
+      - name: Test application with hardware doubles
+        run: python -m unittest discover -s tests -v

@@ -578,7 +578,7 @@ class SimonGame:
             return 'B'
         if not joystick_button.value():
             time.sleep(0.2)  # Debounce
-            return 'J' 
+            return None  # The joystick switch is not one of the six game commands.
             
         # Verificar joystick
         x_val = adc_vrx.read_u16()
@@ -710,7 +710,7 @@ class SimonGame:
         """
         while True:
             # Esperar por entrada para começar
-            while self.get_player_input() is not "A":
+            while self.get_player_input() != "A":
                 time.sleep(0.1)
                 
             self.start_game()

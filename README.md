@@ -12,7 +12,8 @@ do jogo, entradas físicas, matriz RGB, display e efeitos sonoros.
 | O que revisar | Arquivo |
 |---|---|
 | Lógica do jogo e entradas/saídas | [main.py](main.py) |
-| Drivers incluídos | [lib/ssd1306.py](lib/ssd1306.py) e [lib/neopixel.py](lib/neopixel.py) |
+| Driver OLED incluído | [lib/ssd1306.py](lib/ssd1306.py) |
+| Driver da matriz RGB | `neopixel`, incluído no firmware MicroPython RP2 |
 | Arquitetura do hardware | [img/system_architecture.png](img/system_architecture.png) |
 
 A execução requer uma placa compatível com MicroPython e os periféricos
@@ -143,7 +144,28 @@ Todos os componentes de hardware utilizados são on-board:
 3.  **Instalar dependências**:
 
      -   Copie o arquivo [`main.py`](main.py) para sua Raspberry Pi Pico
-     -   Certifique-se de ter as bibliotecas [`ssd1306`](lib/ssd1306.py) e [`neopixel`](lib/neopixel.py) copiadas para a pasta lib da Pico.
+     -   Copie [`ssd1306.py`](lib/ssd1306.py) para `/lib/ssd1306.py` na Pico.
+     -   Use o módulo `neopixel` fornecido pelo firmware oficial MicroPython RP2,
+         conforme a [referência do RP2](https://docs.micropython.org/en/latest/rp2/quickref.html#neopixel-and-apa106-driver).
+         Não copie um driver CircuitPython para `/lib/neopixel.py`: ele depende de
+         `board`, `digitalio` e outras APIs incompatíveis com `machine`.
+     -   Se você instalou anteriormente a cópia CircuitPython deste repositório,
+         remova `/lib/neopixel.py` da placa antes de executar o jogo.
+
+## Verificação sem hardware
+
+Com Python 3.12+ no computador, execute:
+
+```bash
+python -m compileall -q main.py lib tests
+python -m unittest discover -s tests -v
+```
+
+Os testes usam periféricos simulados para conferir a geração de sequências,
+a espera pelo comando A e o botão do joystick. O workflow
+[MicroPython checks](.github/workflows/micropython.yml) repete essas verificações
+a cada push e pull request. Isso não substitui os testes do firmware na placa
+com OLED, buzzer, entradas analógicas e matriz de LEDs.
 
 ## 🧪 Testes de Validação
 Foram realizados testes práticos para garantir o funcionamento do sistema:
