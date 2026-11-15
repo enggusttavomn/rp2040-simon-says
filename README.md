@@ -1,4 +1,4 @@
-# Jogo Simon Says - Raspberry Pi Pico
+# Jogo de memória com LEDs e joystick
 
 Um clássico jogo da memória "Simon Says" implementado para o
 microcontrolador Raspberry Pi Pico, utilizando matriz de LEDs, display
